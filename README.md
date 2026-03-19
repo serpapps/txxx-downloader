@@ -1,342 +1,85 @@
-# TXXX Downloader Browser Extension (Chrome, Firefox, Edge, Opera, Brave)
+# TXXX Downloader — Save Videos as MP4, One Click, Any Quality
 
+Download videos from TXXX.com straight to your computer using a simple browser extension. TXXX Downloader adds a download button directly onto the video player, automatically finds every available stream on the page, and saves your chosen quality as a standard MP4 file. No desktop software, no complicated steps.
 
-## Related
+**Product page:** [https://serp.ly/txxx-downloader](https://serp.ly/txxx-downloader)<br>
+**Help center:** [https://help.serp.co/en/](https://help.serp.co/en/)<br>
+**Latest release:** [https://github.com/serpapps/txxx-downloader/releases/latest](https://github.com/serpapps/txxx-downloader/releases/latest)
 
----
-<details>
-<summary>
-  Research
-</summary>
-# How to Download TXXX Videos: Technical Analysis of Stream Patterns, CDNs, and Download Methods
-*A comprehensive research document analyzing TXXX's video infrastructure, embed patterns, stream formats, and optimal download strategies using modern tools*
-**Authors**: SERP Apps  
-**Date**: December 2025  
-**Version**: 1.0
----
-- [TXXX Downloader gist](https://gist.github.com/devinschumacher/17898ff5687c3e1d7f3b272a39e08f99)
-## Abstract
+## Why TXXX Downloader
 
-This research document provides a technical overview of TXXX's video delivery pipeline, including KVS-style player configuration, HLS/MP4 assets, and CDN request patterns used for playback and downloads.
+TXXX.com relies on streaming delivery that blocks you from right-clicking and saving a video. On top of that, videos on TXXX are served through multiple underlying sources, which makes them extremely difficult to capture with general-purpose download tools. Most generic extensions either miss the stream entirely or grab the wrong file. TXXX Downloader was engineered specifically for TXXX.com, scanning every source on the page so you never miss a video. Just press play and click download.
 
-## Table of Contents
+## Key features
 
-1. [Introduction](#1-introduction)
-2. [TXXX Video Infrastructure Overview](#2-txxx-video-infrastructure-overview)
-3. [URL Patterns and Detection](#3-url-patterns-and-detection)
-4. [Stream Formats and CDN Analysis](#4-stream-formats-and-cdn-analysis)
-5. [yt-dlp Implementation Strategies](#5-yt-dlp-implementation-strategies)
-6. [FFmpeg Processing Techniques](#6-ffmpeg-processing-techniques)
-7. [Alternative Tools and Backup Methods](#7-alternative-tools-and-backup-methods)
-8. [TXXX API Integration](#8-txxx-api-integration)
-9. [Implementation Recommendations](#9-implementation-recommendations)
-10. [Troubleshooting and Edge Cases](#10-troubleshooting-and-edge-cases)
-11. [Conclusion](#11-conclusion)
+- In-page download button placed directly on the TXXX video player
+- Multi-source video detection that scans the entire page for available streams
+- Quality selector displaying all available resolutions, sorted highest first
+- Every video saves as a standard MP4 file compatible with any device
+- Real-time download progress bar with speed and file size readouts
+- Right-click context menu option for instant downloads
+- Desktop notifications when downloads complete
+- Auto-saves to an organized TXXX subfolder in your Downloads directory
+- Dark-themed interface with sky blue accents — clean and unobtrusive
 
----
+## How it works
 
-## 1. Introduction
+1. **Install** the extension in your browser
+2. **Play** any video on TXXX.com
+3. **Click** the download button on the player, the extension icon in your toolbar, or right-click and choose "Download TXXX Video"
+4. **Select quality** and hit Download — the video saves as MP4 to your Downloads/TXXX folder
 
-TXXX is a video hosting site that commonly uses a KVS-style player configuration with MP4 and HLS variants. The site exposes direct media URLs in player configuration blocks or inline JavaScript, which can be extracted and downloaded with standard tooling.
+## Supported formats
 
-### 1.1 Research Scope
+All downloads are saved as standard MP4 files that play on any device or media player. The extension detects every resolution the source offers and presents them sorted by quality, with the best option at the top. Streaming content is automatically converted to a downloadable MP4 during the save process.
 
-- TXXX watch pages and embed endpoints
-- Player configuration payloads (flashvars, JSON, or inline scripts)
-- HLS manifests and MP4 direct file URLs
-- Common CDN hostnames and URL query patterns
+## Who it's for
 
-### 1.2 Methodology
+- TXXX users who want to save videos for reliable offline viewing
+- Non-technical users looking for a browser-based solution instead of desktop apps or command-line tools
+- Anyone who wants to choose a specific resolution before downloading
 
-- Inspect player initialization scripts for video_url, hls, and file keys
-- Capture network requests while playback starts
-- Validate URLs with yt-dlp and ffprobe
-- Document stream variants by quality and codec
+## Common use cases
 
----
+- Save a TXXX video for offline playback on any device
+- Download in your preferred quality from all available resolutions
+- Build a personal video library with automatic folder organization
+- Use the in-page player button for one-click downloads without opening the popup
+- Right-click any video to download instantly via the context menu
 
-## 2. TXXX Video Infrastructure Overview
+## Trial & access
 
-### 2.1 Video Hosting Types
+Sign in with your email to unlock 3 free trial downloads. No credit card required. When you are ready for unlimited downloads, purchase a license at [serp.ly/txxx-downloader](https://serp.ly/txxx-downloader).
 
-- Direct MP4 files hosted on CDN
-- HLS streams exposed via m3u8 playlists
-- Thumbnail and preview assets hosted on static subdomains
+Supported browsers: Chrome, Edge, Brave, Opera, Firefox, Whale, and Yandex.
 
-### 2.2 CDN Architecture
+## FAQ
 
-- Primary site domain: txxx.com
-- CDN patterns: cdn.txxx.com, s1.txxx.com, s2.txxx.com
-- KVS get_file endpoint as the gateway to media assets
+**How do I download a video**
+Go to any video page on TXXX.com, press play, then click the download button on the player, click the extension icon, or right-click and select "Download TXXX Video."
 
-### 2.3 Video Processing Pipeline
+**What quality options are available**
+The extension detects all available qualities from the source, typically multiple resolutions. Options are sorted by quality with the highest listed first, and MP4 is always the preferred output.
 
-1. User loads watch page
-2. Player script assembles flashvars / JSON config
-3. video_url or hls_url is resolved via get_file
-4. Client requests MP4 or m3u8 from CDN
+**What format are downloaded videos**
+All videos are saved as standard MP4 files. Streaming content is converted to MP4 automatically, so every file works on any device or media player out of the box.
 
-### 2.4 Access Control and Authentication
+**Where are my downloads saved**
+Videos automatically save to a TXXX subfolder inside your browser's default Downloads directory, keeping your library neatly organized.
 
-- Most public videos are accessible without auth
-- Some videos require session cookies or age gate confirmation
-- Signed URLs may expire; capture fresh URLs near download time
+**How many free downloads do I get**
+You get 3 free trial downloads after signing in with your email. Purchase a license for unlimited downloads.
 
----
+**Why isn't the extension finding my video**
+Press play on the video first. The extension needs the stream to begin before it can detect the source. If the issue persists, refresh the page and try again.
 
-## 3. URL Patterns and Detection
+**Is my data safe**
+Yes. All video processing happens entirely in your browser. Authentication uses secure one-time-password verification with no passwords stored on any server.
 
-### 3.1 Watch Page URL Patterns
+## Notes
 
-```
-https://txxx.com/video/<slug>/
-https://txxx.com/video/<id>/<slug>/
-https://txxx.com/videos/<slug>/
-```
+Users are responsible for ensuring they have the right to download content. This extension is intended for downloading content you own or have permission to download.
 
-### 3.2 Embed URL Patterns
+## Get it
 
-```
-https://txxx.com/embed/<id>
-https://txxx.com/embed/<id>?autoplay=1
-```
-
-### 3.3 Direct Media and CDN URL Patterns
-
-```
-https://txxx.com/get_file/<hash>/<id>/<quality>.mp4
-https://txxx.com/get_file/<hash>/<id>/playlist.m3u8
-https://cdn.txxx.com/videos/<id>/<file>.mp4
-```
-
-### 3.4 Regex Patterns for URL Extraction
-
-```regex
-txxx\.com/video/([A-Za-z0-9_-]+)
-txxx\.com/embed/([0-9]+)
-get_file/[^/]+/([0-9]+)/
-```
-
-### 3.5 Command-line URL Extraction
-
-```bash
-grep -oE "https?://[^'\" ]+\.(mp4|m3u8|m4s|ts)" page.html | sort -u
-grep -oE "txxx\.com/(video|embed)/[^'\" ]+" page.html | sort -u
-```
-
----
-
-## 4. Stream Formats and CDN Analysis
-
-### 4.1 Stream Formats
-
-| Format | Extension | Notes |
-|--------|-----------|-------|
-| MP4 (progressive) | .mp4 | Direct file URLs; easiest to download |
-| HLS (adaptive) | .m3u8 | Playlist-based; download via yt-dlp or ffmpeg |
-| fMP4 segments | .m4s | Segmented assets referenced by HLS playlists |
-
-### 4.2 Typical Quality Ladder
-
-| Quality | Typical Resolution | Notes |
-|---------|--------------------|-------|
-| Low | 360p - 480p | Fast preview streams or mobile variants |
-| Medium | 720p | Common default for web playback |
-| High | 1080p+ | Available when source uploads are higher quality |
-
-### 4.3 CDN URL Construction and Query Parameters
-
-- get_file URLs often include a hash segment and short-lived tokens
-- Quality is commonly encoded in the filename or path
-- Referer and Origin headers can affect access
-
-### 4.4 Validation and Inspection Commands
-
-```bash
-ffprobe -hide_banner -show_streams "video.mp4"
-ffprobe -hide_banner -show_format "video.mp4"
-ffprobe -hide_banner -i "playlist.m3u8"
-```
-
----
-
-## 5. yt-dlp Implementation Strategies
-
-yt-dlp can parse direct MP4 URLs or HLS manifests. Use cookies when content is gated and prefer format selection to control quality.
-
-### 5.1 Basic Usage
-
-```bash
-yt-dlp [OPTIONS] [--] URL [URL...]
-yt-dlp -F "https://example.com/watch/123"
-```
-
-### 5.2 Authentication and Cookies
-
-- Use --cookies-from-browser to re-use a logged-in session if required
-- Pass referer headers with --add-header when the CDN enforces origin checks
-
-### 5.3 Format Selection and Output Templates
-
-```bash
-yt-dlp -f bestvideo+bestaudio/best "URL"
-yt-dlp -o "%(title)s.%(ext)s" "URL"
-yt-dlp --download-archive archive.txt "URL"
-```
-
-### 5.4 Site-Specific Examples
-
-```bash
-yt-dlp "https://txxx.com/video/<slug>/"
-yt-dlp -F "https://txxx.com/video/<slug>/"
-yt-dlp -f best "https://txxx.com/video/<slug>/"
-```
-
-### 5.5 Batch and Archive Mode
-
-```bash
-yt-dlp -a urls.txt --download-archive archive.txt
-yt-dlp --no-overwrites --continue "URL"
-```
-
-### 5.6 Error Handling Patterns
-
-- Use --retries and --fragment-retries for flaky HLS
-- If 403/401 occurs, refresh cookies or add referer headers
-- Use --downloader aria2c for large MP4 files
-
----
-
-## 6. FFmpeg Processing Techniques
-
-FFmpeg is useful for remuxing HLS playlists into MP4 and validating codecs without re-encoding.
-
-### 6.1 Inspect and Validate Streams
-
-```bash
-ffprobe -hide_banner -i "playlist.m3u8"
-ffmpeg -i "playlist.m3u8" -c copy output.mp4
-```
-
-### 6.2 Common Remux and Repair Patterns
-
-```bash
-ffmpeg -i "playlist.m3u8" -c copy output.mp4
-ffmpeg -i input.mp4 -c copy -movflags +faststart output.mp4
-ffprobe -hide_banner -show_streams output.mp4
-```
-
----
-
-## 7. Alternative Tools and Backup Methods
-
-### 7.1 Streamlink
-
-```bash
-streamlink "https://txxx.com/video/<slug>/" best -o output.mp4
-streamlink --loglevel debug "URL" best
-```
-
-### 7.2 aria2c
-
-```bash
-aria2c -o video.mp4 "https://cdn.txxx.com/videos/<id>/<file>.mp4"
-aria2c -i urls.txt -j 4
-```
-
-### 7.3 gallery-dl
-
-```bash
-gallery-dl "https://txxx.com/video/<slug>/"
-gallery-dl -g "URL"
-```
-
-### 7.4 Browser DevTools
-
-- Filter Network tab for m3u8, mp4, or get_file requests
-- Check player initialization scripts for video_url or hls_url
-- Copy request URL as cURL to preserve headers
-
----
-
-## 8. TXXX API Integration
-
-### 8.1 Known Endpoints
-
-- GET https://txxx.com/api/videofile.php?video_id=<id>
-
-### 8.2 Example Requests
-
-```bash
-curl -L 'https://txxx.com/api/videofile.php?video_id=<id>'
-```
-
-### 8.3 Token and Session Handling
-
-- API responses may return a base64-encoded video_url
-- Decode URL then download via yt-dlp or ffmpeg
-
----
-
-## 9. Implementation Recommendations
-
-### 9.1 Detection Hierarchy
-
-- Parse inline player config for direct MP4 URLs
-- Fallback to HLS playlist URLs (m3u8)
-- If both are absent, scan Network logs for get_file requests
-
-### 9.2 Site-Specific Notes
-
-- Prefer direct MP4 when available for fastest downloads
-- Cache resolved URLs briefly; refresh if tokenized
-- Surface download buttons near player and in grids where possible
-
-### 9.3 Storage and Naming Strategy
-
-- Use %(title)s.%(ext)s output templates to preserve context
-- Store archives to prevent duplicate downloads
-
----
-
-## 10. Troubleshooting and Edge Cases
-
-- HLS playlists may rotate segments; retry on 404
-- Age-gate or consent modals can block player config
-- Some videos are externally embedded and require provider-specific handling
-
----
-
-## 11. Conclusion
-
-TXXX uses a KVS-style delivery model with MP4 and HLS variants. A robust downloader should first parse player config for direct media URLs, then fall back to HLS manifests and network inspection. yt-dlp remains the primary extraction tool, with ffmpeg and streamlink as reliable backups.
-
-| Tool | Best Use Case | Notes |
-|------|---------------|-------|
-| yt-dlp | Primary downloader for MP4/HLS | Supports cookies, format selection, retries |
-| ffmpeg | Remuxing and validation | Useful for HLS to MP4 conversion |
-| streamlink | Live/HLS fallback | Streams to file or pipes into ffmpeg |
-| aria2c | Multi-connection HTTP/HLS downloads | Good for large files and retries |
-| gallery-dl | Image-first or gallery-heavy sites | Best for gallery or attachment extraction |
-
-
----
-
-## Disclaimer and Ethical Use
-
-This document is provided for lawful, personal, or authorized use cases only. Always respect the site terms of service, content creator rights, and applicable laws. If DRM or explicit access controls are present, do not attempt to bypass them; use official downloads or creator-provided access instead.
-
-## Last Updated
-
-December 2025
-
-## Next Review
-
-90 days from last update or when site playback changes are observed.
-
-## Related
-
-- SERP Apps research index (internal)
-- SERP extension downloaders (internal)
-
-</details>
+**Start here:** [https://serp.cc/VDM-txxx-downloader](https://serp.cc/VDM-txxx-downloader)
